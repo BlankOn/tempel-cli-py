@@ -3,6 +3,7 @@
 import argparse
 import requests
 import pyperclip
+import sys
 
 __version__ = '0.0.5'
 
@@ -23,9 +24,9 @@ def get_args():
 
     group = parser.add_mutually_exclusive_group()
     #optional args
-    #group args -t and -f since you cannot use both of them together
+    #group args -t and -s since you cannot use both of them together
     group.add_argument('-t', '--text', help='from text', default=False)
-    group.add_argument('-f', '--filename', help='from file', default=False)    
+    group.add_argument('-s', '--stream', nargs='?', type=argparse.FileType('r'), const=sys.stdin)
 
     parser.add_argument('-v', '--version', action='version',
                     version='%(prog)s {version}'.format(version=__version__))
@@ -37,8 +38,10 @@ def get_args():
                         ]:
         if args.text:
             content = args.text
-        elif args.filename:
-            content = from_file(args.filename)
+        elif args.stream:
+            content = ''
+            for line in args.stream:
+                content += line
         else:
             content = pyperclip.paste() #default source of tempel is string from clipboard
 

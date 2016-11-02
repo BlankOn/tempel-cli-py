@@ -10,7 +10,7 @@ tool for paste your snippet to http://tempel.blankon.in as default it will get d
 
 #### Usage:
 
-usage: `tempel.py [-h] [-t TEXT | -f FILENAME] [-v] language`
+usage: `tempel [-h] [-t TEXT | -s STREAM] [-v] language`
 
 tempel your source code to http://tempel.blankon.in
 
@@ -25,7 +25,7 @@ optional arguments:
 ```
   -h, --help            				          show this help message and exit  
   -t TEXT, --text TEXT  				          from text  
-  -f FILENAME, --filename FILENAME                from file  
+  -s STREAM, --stream STREAM                from stdin  
   -v, --version         				          show program's version number and exit  
 ```
 
