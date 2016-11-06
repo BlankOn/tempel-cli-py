@@ -40,8 +40,7 @@ def get_args():
             for line in args.stream:
                 content += line
         else:
-                content = pyperclip.paste() #default source of tempel is string from clipboard
-            
+            content = pyperclip.paste() #default source of tempel is string from clipboard
         tempel = 'http://tempel.blankon.in'
         values = {
         'language' : args.language,
@@ -52,7 +51,7 @@ def get_args():
             pyperclip.copy(post(tempel, values)) #copy returned url after post to clipboard
         else:
             parser.print_help()
-    except ValueError as e:
+    except:
         parser.print_help()
 
 def post(url, values):
