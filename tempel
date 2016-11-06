@@ -47,10 +47,13 @@ def get_args():
         'language' : args.language,
         'content' : content
         }
-        print 'URL: ', post(tempel, values) #print returned url after post to terminal
-        pyperclip.copy(post(tempel, values)) #copy returned url after post to clipboard
+        if not content == '':
+            print 'URL: ', post(tempel, values) #print returned url after post to terminal
+            pyperclip.copy(post(tempel, values)) #copy returned url after post to clipboard
+        else:
+            parser.print_help()
     except ValueError as e:
-        parser.print_help
+        parser.print_help()
 
 def post(url, values):
     """
