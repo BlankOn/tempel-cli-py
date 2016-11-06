@@ -32,10 +32,7 @@ def get_args():
                     version='%(prog)s {version}'.format(version=__version__))
 
     args = parser.parse_args()
-    if args.language in ['bash', 'c', 'cpp', 'css', 'diff', 'html', 'html+django',
-                         'ini', 'java', 'lua', 'make', 'perl', 'php', 'python',
-                         'rst', 'ruby', 'sql', 'text', 'xml', 'yaml'
-                        ]:
+    try:
         if args.text:
             content = args.text
         elif args.stream:
@@ -43,8 +40,8 @@ def get_args():
             for line in args.stream:
                 content += line
         else:
-            content = pyperclip.paste() #default source of tempel is string from clipboard
-
+                content = pyperclip.paste() #default source of tempel is string from clipboard
+            
         tempel = 'http://tempel.blankon.in'
         values = {
         'language' : args.language,
@@ -52,24 +49,8 @@ def get_args():
         }
         print 'URL: ', post(tempel, values) #print returned url after post to terminal
         pyperclip.copy(post(tempel, values)) #copy returned url after post to clipboard
-    else:
-        print('Please use specified language in help')
-
-def from_file(berkas):
-    """
-    This function read file from specified location, and return content of file as string.
-
-    Args:
-        berkas (str): location of file to be read.
-    
-    Returns:
-        str: The return value of file.
-    """
-    try:
-        f = open(berkas, mode='r')
-        return f.read()
     except ValueError as e:
-        print(e)
+        parser.print_help
 
 def post(url, values):
     """
