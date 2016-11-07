@@ -7,6 +7,10 @@
   
 #### Description:  
 tool for paste your snippet to http://tempel.blankon.in as default it will get data from clipboard as text.  
+clipboard only available for GUI env, for limited env which not support clipboard you may run `tempel` as follows  
+`$ dmesg | tempel bash -s`  
+`$ tempel -t 'free text'`  
+`$ tempel python -s /path/to/file.py`
 
 #### Usage:
 
@@ -24,8 +28,8 @@ positional arguments:
 optional arguments:  
 ```
   -h, --help            				          show this help message and exit  
-  -t TEXT, --text TEXT  				          from text  
-  -s STREAM, --stream STREAM                from stdin  
+  -t TEXT, --text TEXT                    from text  
+  -s STREAM, --stream STREAM              from stdin  
   -v, --version         				          show program's version number and exit  
 ```
 
