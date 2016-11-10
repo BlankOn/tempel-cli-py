@@ -3,6 +3,7 @@
 import argparse
 import requests
 import pyperclip
+import sys
 
 __version__ = '0.0.5'
 
@@ -23,50 +24,34 @@ def get_args():
 
     group = parser.add_mutually_exclusive_group()
     #optional args
-    #group args -t and -f since you cannot use both of them together
+    #group args -t and -s since you cannot use both of them together
     group.add_argument('-t', '--text', help='from text', default=False)
-    group.add_argument('-f', '--filename', help='from file', default=False)    
+    group.add_argument('-s', '--stream', nargs='?', type=argparse.FileType('r'), const=sys.stdin, help='from stdin')
 
     parser.add_argument('-v', '--version', action='version',
                     version='%(prog)s {version}'.format(version=__version__))
 
     args = parser.parse_args()
-    if args.language in ['bash', 'c', 'cpp', 'css', 'diff', 'html', 'html+django',
-                         'ini', 'java', 'lua', 'make', 'perl', 'php', 'python',
-                         'rst', 'ruby', 'sql', 'text', 'xml', 'yaml'
-                        ]:
+    try:
         if args.text:
             content = args.text
-        elif args.filename:
-            content = from_file(args.filename)
+        elif args.stream:
+            content = ''
+            for line in args.stream:
+                content += line
         else:
             content = pyperclip.paste() #default source of tempel is string from clipboard
-
         tempel = 'http://tempel.blankon.in'
         values = {
         'language' : args.language,
         'content' : content
         }
-        print 'URL: ', post(tempel, values) #print returned url after post to terminal
-        pyperclip.copy(post(tempel, values)) #copy returned url after post to clipboard
-    else:
-        print('Please use specified language in help')
-
-def from_file(berkas):
-    """
-    This function read file from specified location, and return content of file as string.
-
-    Args:
-        berkas (str): location of file to be read.
-    
-    Returns:
-        str: The return value of file.
-    """
-    try:
-        f = open(berkas, mode='r')
-        return f.read()
-    except ValueError as e:
-        print(e)
+        if not content == '':
+            print 'URL: ', post(tempel, values) #print returned url after post to terminal
+        else:
+            parser.print_help()
+    except:
+        parser.print_help()
 
 def post(url, values):
     """
